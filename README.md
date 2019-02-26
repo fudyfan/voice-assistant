@@ -1,49 +1,24 @@
 # Voice Assistant
 
-One Paragraph of project description goes here
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+This project manipulates a voice recording in order to be comprehensible to Amazon's Alexa.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+This program uses Python modules that will need to be manually installed, including pyaudio, gpiozero, and librosa. To install, use the following commands:
 
 ```
-Give examples
+pip3 install pyaudio
+pip3 install gpiozero
+pip3 install librosa
 ```
 
-### Installing
+### Usage
 
-A step by step series of examples that tell you how to get a development env running
+The program runs with three command line arguments, input_file, output_file, and speed. The input file is a .wav audio file of a recorded Alexa command, and the output file should specify where to save the .wav output. Speed is an optional parameter that will specify how much the input file audio should be speed up.
 
-Say what the step will be
-
+Usage:
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+python3 main.py [input_file] [output_file] -s [speed]
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+After running this command, an output file will be created, which can be played to Alexa to elict a response. 
