@@ -1,3 +1,4 @@
 env/
 .vscode/
 *.wav
+__pycache__
