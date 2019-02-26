@@ -16,7 +16,6 @@ pip3 install librosa
 
 The program runs with three command line arguments, input_file, output_file, and speed. The input file is a .wav audio file of a recorded Alexa command, and the output file should specify where to save the .wav output. Speed is an optional parameter that will specify how much the input file audio should be speed up.
 
-Usage:
 ```
 python3 main.py [input_file] [output_file] -s [speed]
 ```
