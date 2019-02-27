@@ -4,7 +4,10 @@ import time
 from gpiozero import Button
 from functools import partial
 
-def record_audio(button):
+def record_audio():
+  button = Button(17)
+  button.wait_for_press()
+
   CHUNK = 1024
   FORMAT = pyaudio.paInt16
   CHANNELS = 2
@@ -44,12 +47,6 @@ def record_audio(button):
   wf.close()
 
   return
-
-
-def get_input():
-  # bind button to a pin (17)
-  button = Button(17)
-  button.when_pressed = partial(record_audio, button)
 
 
   
