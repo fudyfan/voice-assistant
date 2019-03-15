@@ -4,24 +4,30 @@ import time
 from gpiozero import Button
 from functools import partial
 
+def callback(in_data, frame_count, time_info, status):
+    buffer.write(in_data)
+    return (in_data, pyaudio.paContinue)
+
 def record_audio():
   button = Button(17)
   button.wait_for_press()
 
   CHUNK = 1024
   FORMAT = pyaudio.paInt16
-  CHANNELS = 2
-  RATE = 44100
+  CHANNELS = 1
+  RATE = 16000
   RECORD_SECONDS = 5
   WAVE_OUTPUT_FILENAME = "voice.wav"
 
   p = pyaudio.PyAudio()
 
-  stream = p.open(format=FORMAT,
-                  channels=CHANNELS,
-                  rate=RATE,
-                  input=True,
-                  frames_per_buffer=CHUNK)
+  stream = p.open(
+    format=pyaudio.paInt16,
+    channels=1,
+    rate=16000,
+    input=True,
+    stream_callback=callback,
+)
 
   frames = []
 
