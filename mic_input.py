@@ -12,8 +12,6 @@ def record_audio():
   button = Button(17)
   button.wait_for_press()
 
-  print("* recording")
-
   # recording setup
   CHUNK = 1024
   FORMAT = pyaudio.paInt16
@@ -36,6 +34,8 @@ def record_audio():
 
   # give time for button to reset
   time.sleep(0.5)
+
+  print("* recording")
   
   # read in data
   while True:
