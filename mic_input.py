@@ -12,6 +12,9 @@ def record_audio():
   button = Button(17)
   button.wait_for_press()
 
+  print("* recording")
+
+  # recording setup
   CHUNK = 1024
   FORMAT = pyaudio.paInt16
   CHANNELS = 1
@@ -27,12 +30,14 @@ def record_audio():
     rate=16000,
     input=True,
     stream_callback=callback,
-)
+  )
 
   frames = []
 
-  print("* recording")
-
+  # give time for button to reset
+  time.sleep(0.5)
+  
+  # read in data
   while True:
       data = stream.read(CHUNK)
       frames.append(data)
@@ -54,5 +59,5 @@ def record_audio():
 
   return
 
-
+record_audio()
   
