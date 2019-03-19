@@ -2,7 +2,6 @@ import pyaudio
 import wave
 import time
 from gpiozero import Button
-from functools import partial
 
 def record_audio():
   button = Button(17)
