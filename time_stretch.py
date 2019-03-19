@@ -1,12 +1,7 @@
 #!/usr/bin/env python
-'''credit: Brian McFee <brm2132@columbia.edu>
-'''
 
 import argparse
-import sys
 import librosa
-from pydub import AudioSegment
-import soundfile
 
 def stretch(input_file, output_file, speed):
     '''Phase-vocoder time stretch demo function.
@@ -27,11 +22,4 @@ def stretch(input_file, output_file, speed):
     y_stretch = librosa.effects.time_stretch(y, speed)
 
     librosa.output.write_wav(output_file, y_stretch, sr)
-
-    voice = AudioSegment.from_wav(output_file)
-    voice = voice + 10
-    voice.export(output_file, "wav")
-
-    data, samplerate = soundfile.read(output_file)
-    soundfile.write(output_file, data, samplerate, subtype='PCM_16')
 
