@@ -9,5 +9,5 @@ client.connect()  # authenticate and other handshaking steps
 with open('voice.wav', 'rb') as f:
     for i, directive in enumerate(client.send_audio_file(f)):
         if directive.name in ['Speak', 'Play']:
-            with open(f'./output_{}.mp3'.format(i), 'wb') as f:
+            with open('./output_{}.mp3'.format(i), 'wb') as f:
                 f.write(directive.audio_attachment)
