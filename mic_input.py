@@ -29,6 +29,7 @@ def record_audio():
   frames = []
 
   print("* recording")
+  time.sleep(0.5)
   
   # read in data
   while True:
