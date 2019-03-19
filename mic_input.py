@@ -28,9 +28,6 @@ def record_audio():
 
   frames = []
 
-  # give time for button to reset
-  time.sleep(0.5)
-
   print("* recording")
   
   # read in data
