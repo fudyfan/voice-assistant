@@ -1,11 +1,7 @@
 #!/usr/bin/env python
-'''credit: Brian McFee <brm2132@columbia.edu>
-'''
 
 import argparse
-import sys
 import librosa
-
 
 def stretch(input_file, output_file, speed):
     '''Phase-vocoder time stretch demo function.
@@ -20,7 +16,7 @@ def stretch(input_file, output_file, speed):
     '''
 
     # 1. Load the wav file, resample
-    y, sr = librosa.load(input_file)
+    y, sr = librosa.load(input_file, sr=16000, mono=True)
 
     # 2. Time-stretch through effects module
     y_stretch = librosa.effects.time_stretch(y, speed)

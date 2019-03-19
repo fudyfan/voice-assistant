@@ -1,13 +1,8 @@
 from low_pass_filter import apply_low_pass_filter
 from time_stretch import stretch
+from wav_convert import convert_16bit
 import argparse
 import sys
-# import click
-
-# @click.command()
-# @click.argument('infile')
-# @click.argument('outfile')
-# @click.option('--speed', default=2, help='speed up by this factor')
 
 
 def main(input_file, output_file, speed):
@@ -17,6 +12,8 @@ def main(input_file, output_file, speed):
     print("Speeding up by factor of {}".format(speed))
     stretch(temp_fname, output_file, speed)
     print("Writing to {}".format(output_file))
+    convert_16bit(output_file)
+    print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
 
 
 def process_arguments(args):
