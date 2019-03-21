@@ -21,7 +21,7 @@ class Recording:
 
 		print("* recording")
 
-	def __exit__(self, exception_type, exception_value, traceback):
+	def __del__(self):
 		print("* done recording")
 
 		self.stream.stop_stream()
