@@ -38,7 +38,7 @@ class Recording:
 
 	def record(self, button):
 		while True:
-			data = stream.read(CHUNK)
+			data = self.stream.read(CHUNK)
 			self.frames.append(data)
 			
 			if button.is_pressed:
