@@ -11,7 +11,7 @@ class Recording:
 		self.filename = filename_
 		self.audio_instance = pyaudio.PyAudio()
 		self.frames = []
-		self.stream = audio_instance.open(
+		self.stream = self.audio_instance.open(
 			format=pyaudio.paInt16,
 			channels=CHANNELS,
 			rate=RATE,
