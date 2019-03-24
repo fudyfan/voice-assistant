@@ -11,3 +11,4 @@ with open('voice.wav', 'rb') as f:
         if directive.name in ['Speak', 'Play']:
             with open('./output_{}.mp3'.format(i), 'wb') as f:
                 f.write(directive.audio_attachment)
+
