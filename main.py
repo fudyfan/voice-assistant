@@ -15,42 +15,47 @@ def_input_string = '__def_input_string__'
 
 def main(input_file, output_file, speed):
     print("ready for input")
-
     input_file_name = input_file
-    if input_file == def_input_string:
-        # record from mic?
-        button = Button(17)
-        button.wait_for_press()
-
-        input_file_name = "out.wav"
-        rec = Recording(input_file_name)
-        rec.record(button)
-
-    # low pass filter
-    temp_fname = "temp.wav"
-    print("Applying low-pass filter to {}".format(input_file_name))
-    apply_low_pass_filter(input_file_name, temp_fname)
-
-    # speed up
-    print("Speeding up by factor of {}".format(speed))
-    stretch(temp_fname, output_file, speed)
-
-    volume_adjust(output_file, 15)
-
-    # make sure formatted for avs
-    print("Writing to {}".format(output_file))
-    convert_16bit(output_file)
-    print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
-
-    # send to avs
+    button = Button(17)
     client = real_avs.connect_to_avs()
-    outfiles = real_avs.send_rec_to_avs(output_file, client)
+    
+    while True:
+        # record from mic?
+        if input_file == def_input_string:
+            button.wait_for_press()
 
-    # play back avs response
-    for of in outfiles:
-        print("playing:" + of)
-        os.system('omxplayer '+ of)
+            input_file_name = "out.wav"
+            rec = Recording(input_file_name)
+            rec.record(button)
 
+        # low pass filter
+        temp_fname = "temp.wav"
+        print("Applying low-pass filter to {}".format(input_file_name))
+        apply_low_pass_filter(input_file_name, temp_fname)
+
+        # speed up
+        print("Speeding up by factor of {}".format(speed))
+        stretch(temp_fname, output_file, speed)
+
+        volume_adjust(output_file, 15)
+
+        # make sure formatted for avs
+        print("Writing to {}".format(output_file))
+        convert_16bit(output_file)
+        print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
+
+        # send to avs
+        outfiles = real_avs.send_rec_to_avs(output_file, client)
+
+        # play back avs response
+        for of in outfiles:
+            print("playing:" + of)
+            os.system('omxplayer '+ of)
+
+        if input_file == def_input_string:
+            print("Command completed! Waiting for new input!")
+        else:
+            break
 
 
 def process_arguments(args):
