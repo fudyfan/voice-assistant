@@ -9,6 +9,7 @@ import time
 from recording import Recording
 from gpiozero import Button
 import real_avs
+from avs_client.avs_client import helpers
 import os
 
 def_input_string = '__def_input_string__'
@@ -47,7 +48,8 @@ def main(input_file, output_file, speed):
 
         # send to avs
         # outfiles = real_avs.send_rec_to_avs(output_file, client)
-        outfiles = real_avs.send_rec_to_avs(temp_fname, client)
+        dialog_req_id = helpers.generate_unique_id()
+        outfiles = real_avs.send_rec_to_avs(temp_fname, client, dialog_req_id)
 
         # play back avs response
         for of in outfiles:

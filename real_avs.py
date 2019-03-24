@@ -9,10 +9,10 @@ def connect_to_avs():
 	client.connect()  # authenticate and other handshaking steps
 	return client
 
-def send_rec_to_avs(wav_file, client):
+def send_rec_to_avs(wav_file, client, id):
 	outfiles = []
 	with open(wav_file, 'rb') as f:
-		alex_returned = client.send_audio_file(f)
+		alex_returned = client.send_audio_file(f, dialog_request_id=id)
 		if alex_returned is None:
 			print("Panicking")
 			return outfiles
