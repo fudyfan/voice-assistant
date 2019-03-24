@@ -1,6 +1,6 @@
 from low_pass_filter import apply_low_pass_filter
 from time_stretch import stretch
-from wav_convert import convert_16bit
+from wav_convert import convert_16bit, volume_adjust
 import argparse
 import sys
 import pyaudio
@@ -34,6 +34,8 @@ def main(input_file, output_file, speed):
     # speed up
     print("Speeding up by factor of {}".format(speed))
     stretch(temp_fname, output_file, speed)
+
+    volume_adjust(output_file, 15)
 
     # make sure formatted for avs
     print("Writing to {}".format(output_file))
