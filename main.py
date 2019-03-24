@@ -35,9 +35,10 @@ def main(input_file, output_file, speed):
 
         # speed up
         print("Speeding up by factor of {}".format(speed))
-        stretch(temp_fname, output_file, speed)
+        #stretch(temp_fname, output_file, speed)
 
-        volume_adjust(output_file, 15)
+        # volume_adjust(output_file, 15)
+        volume_adjust(temp_fname, 15)
 
         # make sure formatted for avs
         print("Writing to {}".format(output_file))
@@ -45,7 +46,8 @@ def main(input_file, output_file, speed):
         print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
 
         # send to avs
-        outfiles = real_avs.send_rec_to_avs(output_file, client)
+        # outfiles = real_avs.send_rec_to_avs(output_file, client)
+        outfiles = real_avs.send_rec_to_avs(temp_fname, client)
 
         # play back avs response
         for of in outfiles:
