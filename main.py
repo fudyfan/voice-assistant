@@ -41,8 +41,8 @@ def main(input_file, output_file, speed):
         volume_adjust(temp_fname, 15)
 
         # make sure formatted for avs
-        print("Writing to {}".format(output_file))
-        convert_16bit(output_file)
+        print("Writing to {}".format(temp_fname))
+        convert_16bit(temp_fname)
         print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
 
         # send to avs
