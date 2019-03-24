@@ -17,9 +17,9 @@ def send_rec_to_avs(wav_file, client):
 			print("Panicking")
 			return outfiles
 
-	    for i, directive in enumerate(alex_returned):
-	        if directive.name in ['Speak', 'Play']:
-	            with open('./output_{}.mp3'.format(i), 'wb') as f:
-	                f.write(directive.audio_attachment)
-	                outfiles += ['output_{}.mp3'.format(i)]
+		for i, directive in enumerate(alex_returned):
+			if directive.name in ['Speak', 'Play']:
+				with open('./output_{}.mp3'.format(i), 'wb') as f:
+					f.write(directive.audio_attachment)
+					outfiles += ['output_{}.mp3'.format(i)]
 	return outfiles
