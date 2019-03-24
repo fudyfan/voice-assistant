@@ -21,25 +21,24 @@ class Recording:
 
 		print("* recording")
 
-	def __del__(self):
-		print("* done recording")
-
-		self.stream.stop_stream()
-		self.stream.close()
-		self.audio_instance.terminate()
-
-		# write file
-		wf = wave.open(self.filename, 'wb')
-		wf.setnchannels(CHANNELS)
-		wf.setsampwidth(self.audio_instance.get_sample_size(FORMAT))
-		wf.setframerate(RATE)
-		wf.writeframes(b''.join(self.frames))
-		wf.close()
-
 	def record(self, button):
 		while True:
 			data = self.stream.read(CHUNK)
 			self.frames.append(data)
 			
 			if button.is_pressed:
+				print("* done recording")
+
+				self.stream.stop_stream()
+				self.stream.close()
+				self.audio_instance.terminate()
+
+				# write file
+				wf = wave.open(self.filename, 'wb')
+				wf.setnchannels(CHANNELS)
+				wf.setsampwidth(self.audio_instance.get_sample_size(FORMAT))
+				wf.setframerate(RATE)
+				wf.writeframes(b''.join(self.frames))
+				wf.close()
+
 				return
