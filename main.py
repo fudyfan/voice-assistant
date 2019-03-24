@@ -9,7 +9,7 @@ import time
 from recording import Recording
 from gpiozero import Button
 import real_avs
-from avs_client.avs_client import helpers
+from alexa_client.alexa_client import helpers
 import os
 
 def_input_string = '__def_input_string__'
