@@ -19,7 +19,8 @@ def main(input_file, output_file, speed):
     input_file_name = input_file
     button = Button(17)
     client = real_avs.connect_to_avs()
-    
+    dialog_req_id = helpers.generate_unique_id()
+
     while True:
         # record from mic?
         if input_file == def_input_string:
@@ -48,7 +49,6 @@ def main(input_file, output_file, speed):
 
         # send to avs
         # outfiles = real_avs.send_rec_to_avs(output_file, client)
-        dialog_req_id = helpers.generate_unique_id()
         outfiles = real_avs.send_rec_to_avs(temp_fname, client, dialog_req_id)
 
         # play back avs response
