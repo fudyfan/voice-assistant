@@ -12,6 +12,8 @@ import real_avs
 import os
 
 def main(input_file, output_file, speed):
+    print("ready for input")
+
     # record from mic
     button = Button(17)
     button.wait_for_press()
@@ -36,10 +38,12 @@ def main(input_file, output_file, speed):
 
     # send to avs
     client = real_avs.connect_to_avs()
-    real_avs.send_rec_to_avs(output_file, client)
+    outfiles = real_avs.send_rec_to_avs(output_file, client)
 
     # play back avs response
-    os.system('omxplayer '+ 'output_0.mp3')
+    for of in outfiles:
+        print("playing:" + of)
+        os.system('omxplayer '+ of)
 
 
 

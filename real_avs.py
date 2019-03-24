@@ -10,8 +10,11 @@ def connect_to_avs():
 	return client
 
 def send_rec_to_avs(wav_file, client):
+	outfiles = []
 	with open(wav_file, 'rb') as f:
 	    for i, directive in enumerate(client.send_audio_file(f)):
 	        if directive.name in ['Speak', 'Play']:
 	            with open('./output_{}.mp3'.format(i), 'wb') as f:
 	                f.write(directive.audio_attachment)
+	                outfiles += ['output_{}.mp3'.format(i)]
+	return outfiles
