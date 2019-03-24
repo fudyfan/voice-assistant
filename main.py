@@ -8,7 +8,8 @@ import wave
 import time
 from recording import Recording
 from gpiozero import Button
-
+import real_avs
+import os
 
 def main(input_file, output_file, speed):
     # record from mic
@@ -23,20 +24,23 @@ def main(input_file, output_file, speed):
     temp_fname = "temp.wav"
     print("Applying low-pass filter to {}".format(input_file_name))
     apply_low_pass_filter(input_file_name, temp_fname)
-        
+
     # speed up
     print("Speeding up by factor of {}".format(speed))
     stretch(temp_fname, output_file, speed)
-    
+
     # make sure formatted for avs
     print("Writing to {}".format(output_file))
     convert_16bit(output_file)
     print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
 
     # send to avs
-    
+    client = real_avs.connect_to_avs()
+    real_avs.send_rec_to_avs(output_file, client)
 
     # play back avs response
+    os.system('omxplayer '+ 'output_0.mp3')
+
 
 
 def process_arguments(args):
