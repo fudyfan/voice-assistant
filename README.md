@@ -21,3 +21,7 @@ python3 main.py [input_file] [output_file] -s [speed]
 ```
 
 After running this command, an output file will be created, which can be played to Alexa to elict a response. 
+
+### User Tutorial
+
+To use the product, the user should press the button on the Raspberry Pi and speak their Alexa query into the microphone. When they are finished, they should press the button again. The system will process the command and play back a response. 
