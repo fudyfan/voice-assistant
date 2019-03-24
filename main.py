@@ -11,16 +11,20 @@ from gpiozero import Button
 import real_avs
 import os
 
+def_input_string = '__def_input_string__'
+
 def main(input_file, output_file, speed):
     print("ready for input")
 
-    # record from mic
-    button = Button(17)
-    button.wait_for_press()
+    input_file_name = input_file
+    if input_file == def_input_string:
+        # record from mic?
+        button = Button(17)
+        button.wait_for_press()
 
-    input_file_name = "out.wav"
-    rec = Recording(input_file_name)
-    rec.record(button)
+        input_file_name = "out.wav"
+        rec = Recording(input_file_name)
+        rec.record(button)
 
     # low pass filter
     temp_fname = "temp.wav"
@@ -52,9 +56,11 @@ def process_arguments(args):
 
     parser = argparse.ArgumentParser(description='Voice assistant')
 
-    parser.add_argument('input_file',
+    parser.add_argument('-i', '--input_file', 
                         action='store',
-                        help='path to the input file (wav, mp3, etc)')
+                        default=def_input_string,
+                        help='path to the input file (wav, mp3, etc)',
+                        required=False)
 
     parser.add_argument('output_file',
                         action='store',
