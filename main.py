@@ -37,7 +37,7 @@ def main(input_file, output_file, speed):
 
         # speed up
         print("Speeding up by factor of {}".format(speed))
-        #stretch(temp_fname, output_file, speed)
+        stretch(temp_fname, output_file, speed)
 
         volume_adjust(output_file, 15)
         # volume_adjust(temp_fname, 15)
