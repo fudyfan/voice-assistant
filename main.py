@@ -48,7 +48,8 @@ def main(input_file, output_file, speed):
         print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
 
         # send to avs
-        outfiles = real_avs.send_rec_to_avs(output_file, client)
+        # outfiles = real_avs.send_rec_to_avs(output_file, client)
+        outfiles = real_avs.send_rec_to_avs(output_file, client, dialog_req_id)
         # outfiles = real_avs.send_rec_to_avs(temp_fname, client, dialog_req_id)
 
         # play back avs response
