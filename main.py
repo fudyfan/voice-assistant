@@ -60,12 +60,15 @@ def launch_menu(button):
                 button.wait_for_release()
                 turn_off(pin)
                 if pin == RED:
+                    print("selected speed 2")
                     SPEED = 2.0
                     return
                 elif pin == GRN:
+                    print("selected speed 3")
                     SPEED = 3.0
                     return
                 else:
+                    print("selected speed 4")
                     SPEED = 4.0
                     return
             turn_off(pin)
@@ -90,6 +93,7 @@ def main(input_file, output_file, speed, debug=False):
             # record from mic
             if input_file == "in.wav":
                 button.wait_for_press()
+                button.wait_for_release()
                 rec = Recording(input_file)
                 turn_off(GRN)
                 turn_on(BLU)
