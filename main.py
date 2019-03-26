@@ -14,6 +14,7 @@ import os
 
 def_input_string = '__def_input_string__'
 
+
 def main(input_file, output_file, speed):
     print("ready for input")
     input_file_name = input_file
@@ -55,7 +56,7 @@ def main(input_file, output_file, speed):
         # play back avs response
         for of in outfiles:
             print("playing:" + of)
-            os.system('omxplayer '+ of)
+            os.system('omxplayer ' + of)
 
         if input_file == def_input_string:
             print("Command completed! Waiting for new input!")
@@ -68,14 +69,16 @@ def process_arguments(args):
 
     parser = argparse.ArgumentParser(description='Voice assistant')
 
-    parser.add_argument('-i', '--input_file', 
+    parser.add_argument('-i', '--input_file',
                         action='store',
                         default=def_input_string,
-                        help='path to the input file (wav, mp3, etc)',
-                        required=False)
+                        required=False,
+                        help='path to the input file (wav)')
 
-    parser.add_argument('output_file',
+    parser.add_argument('-o', '--output_file',
                         action='store',
+                        default='out.wav',
+                        required=False,
                         help='path to the processed output (wav)')
 
     parser.add_argument('-s', '--speed',
