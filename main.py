@@ -95,7 +95,7 @@ def main(input_file, output_file, speed, debug=False):
                 for i in range(100):
                     if not button.is_pressed:
                         break
-                    sleep(0.05)
+                    time.sleep(0.05)
 
                 # at this point know they've held for 5 sec
                 if button.is_pressed:
