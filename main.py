@@ -21,8 +21,7 @@ def main(input_file, output_file, speed, debug=False):
 
     while True:
         # record from mic
-        if input_file is None:
-            input_file = "in.wav"
+        if input_file == "in.wav":
             button.wait_for_press()
             rec = Recording(input_file)
             rec.record(button)
@@ -66,6 +65,7 @@ def process_arguments(args):
     parser = argparse.ArgumentParser(description='Voice assistant')
     parser.add_argument('-i', '--input_file',
                         action='store',
+                        default="in.wav",
                         required=False,
                         help='path to the input file (wav)')
     parser.add_argument('-o', '--output_file',
