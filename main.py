@@ -43,9 +43,9 @@ def main(input_file, output_file, speed, debug=False):
             # record from mic
             if input_file == "in.wav":
                 button.wait_for_press()
+                rec = Recording(input_file)
                 turn_off(GRN)
                 turn_on(BLU)
-                rec = Recording(input_file)
                 rec.record(button)
             
             turn_off(GRN)
