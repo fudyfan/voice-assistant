@@ -11,8 +11,8 @@ from wav_convert import convert_16bit, volume_adjust
 
 
 def main(input_file, output_file, speed, debug=False):
+    """Main control flow for Voice Assistant device."""
     print("ready for input")
-    input_file_name = input_file
     button = Button(17)
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
@@ -21,31 +21,31 @@ def main(input_file, output_file, speed, debug=False):
         # record from mic
         if input_file is None:
             button.wait_for_press()
-
-            input_file_name = "out.wav"
-            rec = Recording(input_file_name)
+            rec = Recording("in.wav")
             rec.record(button)
 
         if debug:
+            output_file = input_file
+        else:
             # low pass filter
             temp_fname = "temp.wav"
-            print("Applying low-pass filter to {}".format(input_file_name))
-            apply_low_pass_filter(input_file_name, temp_fname)
+            print("Applying low-pass filter to {}".format(input_file))
+            apply_low_pass_filter(input_file, temp_fname)
 
             # speed up
             print("Speeding up by factor of {}".format(speed))
             stretch(temp_fname, output_file, speed)
 
+            # may not be necessary, or can try to do this dynamically
             volume_adjust(output_file, 15)
 
-        # make sure formatted for avs
-        print("Writing to {}".format(output_file))
-        convert_16bit(output_file)
-        print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
+            # make sure formatted for avs
+            print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
+            convert_16bit(output_file)
 
         # send to avs
-        # outfiles = avs.send_rec_to_avs(output_file, client)
-        outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
+        outfiles = avs.send_rec_to_avs(output_file, client)
+        # outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
 
         # play back avs response
         for of in outfiles:
@@ -60,35 +60,27 @@ def main(input_file, output_file, speed, debug=False):
 
 def process_arguments(args):
     '''Argparse function to get the program parameters'''
-
     parser = argparse.ArgumentParser(description='Voice assistant')
-
     parser.add_argument('-i', '--input_file',
                         action='store',
                         required=False,
                         help='path to the input file (wav)')
-
     parser.add_argument('-o', '--output_file',
                         action='store',
-                        default='out.wav',
                         required=False,
                         help='path to the processed output (wav)')
-
     parser.add_argument('-s', '--speed',
                         action='store',
                         type=float,
                         default=2.0,
                         required=False,
                         help='speed')
-
     parser.add_argument('-d', '--debug',
                         action='store_true',
-                        help='debug mode')
-
+                        help='debug mode (omit voice processing steps)')
     return vars(parser.parse_args(args))
 
 
 if __name__ == '__main__':
-    # get the parameters
     parameters = process_arguments(sys.argv[1:])
     main(**parameters)
