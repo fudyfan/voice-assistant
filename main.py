@@ -20,8 +20,9 @@ def main(input_file, output_file, speed, debug=False):
     while True:
         # record from mic
         if input_file is None:
+            input_file = "in.wav"
             button.wait_for_press()
-            rec = Recording("in.wav")
+            rec = Recording(input_file)
             rec.record(button)
 
         if debug:
