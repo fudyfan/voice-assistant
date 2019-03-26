@@ -67,6 +67,7 @@ def process_arguments(args):
                         help='path to the input file (wav)')
     parser.add_argument('-o', '--output_file',
                         action='store',
+                        default="out.wav",
                         required=False,
                         help='path to the processed output (wav)')
     parser.add_argument('-s', '--speed',
