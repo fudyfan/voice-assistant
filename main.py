@@ -15,7 +15,6 @@ RED = 12
 GRN = 33
 BLU = 32
 PINS = [RED,GRN,BLU]
-SPEED = -1
 
 def turn_on_all():
     for pin in PINS:
@@ -61,15 +60,15 @@ def launch_menu(button):
                 turn_off(pin)
                 if pin == RED:
                     print("selected speed 2")
-                    SPEED = 2.0
+                    speed = 2.0
                     return
                 elif pin == GRN:
                     print("selected speed 3")
-                    SPEED = 3.0
+                    speed = 3.0
                     return
                 else:
                     print("selected speed 4")
-                    SPEED = 4.0
+                    speed = 4.0
                     return
             turn_off(pin)
 
@@ -77,11 +76,9 @@ def main(input_file, output_file, speed, debug=False):
     """
     Main control flow for Voice Assistant device.
     """
-    SPEED = speed
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(PINS, GPIO.OUT, initial=GPIO.LOW)
-    button = Button(17, hold_time=5)
-    button.when_held = launch_menu
+    button = Button(17)
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
 
@@ -93,7 +90,18 @@ def main(input_file, output_file, speed, debug=False):
             # record from mic
             if input_file == "in.wav":
                 button.wait_for_press()
-                button.wait_for_release()
+
+                # check if should launch menu, requires holding for 5 sec
+                for i in range(100):
+                    if not button.is_pressed:
+                        break
+                    sleep(0.05)
+
+                # at this point know they've held for 5 sec
+                if button.is_pressed:
+                    speed = launch_menu(button)
+                    continue
+
                 rec = Recording(input_file)
                 turn_off(GRN)
                 turn_on(BLU)
@@ -112,8 +120,8 @@ def main(input_file, output_file, speed, debug=False):
                 apply_low_pass_filter(input_file, temp_fname)
 
                 # speed up
-                print("Speeding up by factor of {}".format(SPEED))
-                stretch(temp_fname, output_file, SPEED)
+                print("Speeding up by factor of {}".format(speed))
+                stretch(temp_fname, output_file, speed)
 
                 # may not be necessary, or can try to do this dynamically
                 volume_adjust(output_file, 15)
