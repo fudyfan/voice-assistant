@@ -43,11 +43,13 @@ def main(input_file, output_file, speed, debug=False):
             # record from mic
             if input_file == "in.wav":
                 button.wait_for_press()
-                turn_off(GRN)
-                turn_on(BLU)
                 rec = Recording(input_file)
                 rec.record(button)
-                turn_off(BLU)
+                turn_off(GRN)
+                turn_on(BLU)
+            
+            turn_off(GRN)
+            turn_off(BLU)
 
             turn_on(RED)
             if debug:
@@ -89,6 +91,9 @@ def main(input_file, output_file, speed, debug=False):
             turn_off(GRN)
     
     except KeyboardInterrupt:
+        turn_off(BLU)
+        turn_off(RED)
+        turn_off(GRN)
         GPIO.cleanup()
 
 
