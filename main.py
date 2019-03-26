@@ -60,16 +60,13 @@ def launch_menu(button):
                 turn_off(pin)
                 if pin == RED:
                     print("selected speed 2")
-                    speed = 2.0
-                    return
+                    return 2.0
                 elif pin == GRN:
                     print("selected speed 3")
-                    speed = 3.0
-                    return
+                    return 3.0
                 else:
                     print("selected speed 4")
-                    speed = 4.0
-                    return
+                    return 4.0
             turn_off(pin)
 
 def main(input_file, output_file, speed, debug=False):
