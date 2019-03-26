@@ -31,59 +31,61 @@ def main(input_file, output_file, speed, debug=False):
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
 
-    while True:
-        print("ready for input")
-        turn_on(GRN)
+    try:
+        while True:
+            print("ready for input")
+            turn_on(GRN)
 
-        # record from mic
-        if input_file == "in.wav":
-            button.wait_for_press()
-            turn_off(GRN)
+            # record from mic
+            if input_file == "in.wav":
+                button.wait_for_press()
+                turn_off(GRN)
+                turn_on(BLU)
+                rec = Recording(input_file)
+                rec.record(button)
+                turn_off(BLU)
+
+            turn_on(RED)
+            if debug:
+                output_file = input_file
+            else:
+                # low pass filter
+                temp_fname = "temp.wav"
+                print("Applying low-pass filter to {}".format(input_file))
+                apply_low_pass_filter(input_file, temp_fname)
+
+                # speed up
+                print("Speeding up by factor of {}".format(speed))
+                stretch(temp_fname, output_file, speed)
+
+                # may not be necessary, or can try to do this dynamically
+                volume_adjust(output_file, 15)
+
+                # make sure formatted for avs
+                print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
+                convert_16bit(output_file)
+
+            # send to avs
+            outfiles = avs.send_rec_to_avs(output_file, client)
+            # outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
+
+            # play back avs response
             turn_on(BLU)
-            rec = Recording(input_file)
-            rec.record(button)
+            for of in outfiles:
+                print("playing: " + of)
+                os.system("omxplayer " + of)
+
+            if input_file == 'in.wav':
+                print("Command completed! Waiting for new input!")
+            else:
+                break
+
             turn_off(BLU)
-
-        turn_on(RED)
-        if debug:
-            output_file = input_file
-        else:
-            # low pass filter
-            temp_fname = "temp.wav"
-            print("Applying low-pass filter to {}".format(input_file))
-            apply_low_pass_filter(input_file, temp_fname)
-
-            # speed up
-            print("Speeding up by factor of {}".format(speed))
-            stretch(temp_fname, output_file, speed)
-
-            # may not be necessary, or can try to do this dynamically
-            volume_adjust(output_file, 15)
-
-            # make sure formatted for avs
-            print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
-            convert_16bit(output_file)
-
-        # send to avs
-        outfiles = avs.send_rec_to_avs(output_file, client)
-        # outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
-
-        # play back avs response
-        turn_on(BLU)
-        for of in outfiles:
-            print("playing: " + of)
-            os.system("omxplayer " + of)
-
-        if input_file == 'in.wav':
-            print("Command completed! Waiting for new input!")
-        else:
-            break
-
-        turn_off(BLU)
-        turn_off(RED)
-        turn_off(GRN)
-
-    GPIO.cleanup()
+            turn_off(RED)
+            turn_off(GRN)
+    
+    except KeyboardInterrupt:
+        GPIO.cleanup()
 
 
 def process_arguments(args):
