@@ -25,3 +25,5 @@ After running this command, an output file will be created, which can be played 
 ### User Tutorial
 
 To use the product, the user should press the button on the Raspberry Pi and speak their Alexa query into the microphone. When they are finished, they should press the button again. The system will process the command and play back a response. 
+
+The light attached to the Raspberry Pi will inidicate the state of the program. When it is green, it is idle and ready to take in input. When it is blue, it is listening for audio input. When it is red, it is processing the input and getting a repsonse from Alexa. When it is purple, it is playing ALexa's response to the user. 
