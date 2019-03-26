@@ -9,11 +9,21 @@ from low_pass_filter import apply_low_pass_filter
 from time_stretch import stretch
 from wav_convert import convert_16bit, volume_adjust
 import RPi.GPIO as GPIO
+import time
 
 RED = 12
 GRN = 33
 BLU = 32
 PINS = [RED,GRN,BLU]
+SPEED = -1
+
+def turn_on_all():
+    for pin in PINS:
+        turn_on(pin)
+
+def turn_off_all():
+    for pin in PINS:
+        turn_off(pin)
 
 def turn_on(pin):
     GPIO.setmode(GPIO.BOARD)
@@ -25,13 +35,50 @@ def turn_off(pin):
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
-def main(input_file, output_file, speed, debug=False):
+def launch_menu(button):
+    print("starting menu")
+    
+    # flash white 2 times
+    turn_off_all()
+    time.sleep(1)
+    for i in range(0, 2):
+        turn_on_all()
+        time.sleep(1)
+        turn_off_all()
+        time.sleep(1)
+
+    # make sure user lets go of button
+    button.wait_for_release()
+
+    # iterate through options until user makes a choice
+    while True:
+        for pin in PINS:
+            turn_on(pin)
+            time.sleep(1.5)
+            if button.is_pressed:
+                turn_off(pin)
+                button.wait_for_release()
+                turn_off(pin)
+                if pin == RED:
+                    SPEED =  2
+                    return
+                elif pin == GRN:
+                    SPEED =  3
+                    return
+                else:
+                    SPEED =  4
+                    return
+            turn_off(pin)
+
+def main(input_file, output_file, def_speed, debug=False):
     """
     Main control flow for Voice Assistant device.
     """
+    SPEED = def_speed
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(PINS, GPIO.OUT, initial=GPIO.LOW)
-    button = Button(17)
+    button = Button(17, hold_time=5)
+    button.when_held = launch_menu
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
 
@@ -61,8 +108,8 @@ def main(input_file, output_file, speed, debug=False):
                 apply_low_pass_filter(input_file, temp_fname)
 
                 # speed up
-                print("Speeding up by factor of {}".format(speed))
-                stretch(temp_fname, output_file, speed)
+                print("Speeding up by factor of {}".format(SPEED))
+                stretch(temp_fname, output_file, SPEED)
 
                 # may not be necessary, or can try to do this dynamically
                 volume_adjust(output_file, 15)
@@ -84,19 +131,13 @@ def main(input_file, output_file, speed, debug=False):
             if input_file == 'in.wav':
                 print("Command completed! Waiting for new input!")
             else:
-                turn_off(BLU)
-                turn_off(RED)
-                turn_off(GRN)
+                turn_off_all()
                 break
 
-            turn_off(BLU)
-            turn_off(RED)
-            turn_off(GRN)
+            turn_off_all()
     
     except KeyboardInterrupt:
-        turn_off(BLU)
-        turn_off(RED)
-        turn_off(GRN)
+        turn_off_all()
         GPIO.cleanup()
 
 
