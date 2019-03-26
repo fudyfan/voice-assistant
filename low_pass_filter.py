@@ -1,4 +1,4 @@
-# Reference: https://stackoverflow.com/questions/3694918/how-to-extract-frequency-associated-with-fft-values-in-python
+# referenced https://stackoverflow.com/questions/3694918/how-to-extract-frequency-associated-with-fft-values-in-python
 
 import numpy as np
 import wave
@@ -67,7 +67,7 @@ def apply_low_pass_filter(fname, outname):
         freqRatio = (cutOffFrequency/sampleRate)
         N = int(math.sqrt(0.196196 + freqRatio**2)/freqRatio)
 
-        # Use moviung average (only on first channel)
+        # Use moving average (only on first channel)
         filtered = running_mean(channels[0], N).astype(channels.dtype)
 
         wav_file = wave.open(outname, "w")

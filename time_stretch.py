@@ -3,6 +3,7 @@
 import argparse
 import librosa
 
+
 def stretch(input_file, output_file, speed):
     '''Phase-vocoder time stretch demo function.
 
@@ -22,4 +23,3 @@ def stretch(input_file, output_file, speed):
     y_stretch = librosa.effects.time_stretch(y, speed)
 
     librosa.output.write_wav(output_file, y_stretch, sr)
-
