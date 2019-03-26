@@ -1,6 +1,6 @@
 ''' Test Cases. '''
 
-import real_avs
+import avs
 import os
 from low_pass_filter import apply_low_pass_filter
 from time_stretch import stretch
@@ -16,9 +16,9 @@ def test_avs:
     '''Tests that a prerecorded sample produces a result.'''
     input_file = "sample_audio/alexa_what_time_is_it.wav"
     dialog_req_id = helpers.generate_unique_id()
-    client = real_avs.connect_to_avs()
+    client = avs.connect_to_avs()
 
-    outfiles = real_avs.send_rec_to_avs(input_file, client, dialog_req_id)
+    outfiles = avs.send_rec_to_avs(input_file, client, dialog_req_id)
 
     for of in outfiles:
         print("playing:" + of)
@@ -29,7 +29,7 @@ def test_brad:
     '''Tests that a recording from Brad produces a result.'''
     input_file = "sample_audio/flip_a_coin.wav"
     dialog_req_id = helpers.generate_unique_id()
-    client = real_avs.connect_to_avs()   
+    client = avs.connect_to_avs()   
     
     temp_fname = "temp.wav"
     apply_low_pass_filter(input_file, temp_fname)
@@ -37,7 +37,7 @@ def test_brad:
     volume_adjust(temp_fname, 15)
     convert_16bit(temp_fname)
 
-    outfiles = real_avs.send_rec_to_avs(temp_fname, client, dialog_req_id)
+    outfiles = avs.send_rec_to_avs(temp_fname, client, dialog_req_id)
 
     for of in outfiles:
         print("playing:" + of)
@@ -48,11 +48,11 @@ def test_incorrect:
     '''Tests that "bad input" produces an error message.'''
     input_file = "sample_audio/bad_recording.wav"
     dialog_req_id = helpers.generate_unique_id()
-    client = real_avs.connect_to_avs()  
+    client = avs.connect_to_avs()  
 
     convert_16bit(input_file)
 
-    outfiles = real_avs.send_rec_to_avs(input_file, client, dialog_req_id)
+    outfiles = avs.send_rec_to_avs(input_file, client, dialog_req_id)
 
     for of in outfiles:
         print("playing:" + of)
