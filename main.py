@@ -33,6 +33,41 @@ def turn_off(pin):
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
+def launch_menu(button):
+    print("starting menu")
+    
+    # flash white 2 times
+    turn_off_all()
+    time.sleep(1)
+    for i in range(0, 2):
+        turn_on_all()
+        time.sleep(1)
+        turn_off_all()
+        time.sleep(1)
+
+    # make sure user lets go of button
+    button.wait_for_release()
+
+    # iterate through options until user makes a choice
+    while True:
+        for pin in PINS:
+            turn_on(pin)
+            time.sleep(1.5)
+            if button.is_pressed:
+                turn_off(pin)
+                button.wait_for_release()
+                turn_off(pin)
+                if pin == RED:
+                    print("selected speed 2")
+                    return 2.0
+                elif pin == GRN:
+                    print("selected speed 3")
+                    return 3.0
+                else:
+                    print("selected speed 4")
+                    return 4.0
+            turn_off(pin)
+
 def main(input_file, output_file, speed, debug=False):
     """
     Main control flow for Voice Assistant device.
@@ -51,6 +86,18 @@ def main(input_file, output_file, speed, debug=False):
             # record from mic
             if input_file == "in.wav":
                 button.wait_for_press()
+
+                # check if should launch menu, requires holding for 5 sec
+                for i in range(100):
+                    if not button.is_pressed:
+                        break
+                    time.sleep(0.05)
+
+                # at this point know they've held for 5 sec
+                if button.is_pressed:
+                    speed = launch_menu(button)
+                    continue
+
                 rec = Recording(input_file)
                 turn_off(GRN)
                 turn_on(BLU)
