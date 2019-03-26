@@ -48,10 +48,10 @@ def main(input_file, output_file, speed, debug=False):
             rec.record(button)
             turn_off(BLU)
 
+        turn_on(RED)
         if debug:
             output_file = input_file
         else:
-            turn_on(RED)
             # low pass filter
             temp_fname = "temp.wav"
             print("Applying low-pass filter to {}".format(input_file))
