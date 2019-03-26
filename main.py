@@ -60,21 +60,21 @@ def launch_menu(button):
                 button.wait_for_release()
                 turn_off(pin)
                 if pin == RED:
-                    SPEED =  2
+                    SPEED = 2.0
                     return
                 elif pin == GRN:
-                    SPEED =  3
+                    SPEED = 3.0
                     return
                 else:
-                    SPEED =  4
+                    SPEED = 4.0
                     return
             turn_off(pin)
 
-def main(input_file, output_file, def_speed, debug=False):
+def main(input_file, output_file, speed, debug=False):
     """
     Main control flow for Voice Assistant device.
     """
-    SPEED = def_speed
+    SPEED = speed
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(PINS, GPIO.OUT, initial=GPIO.LOW)
     button = Button(17, hold_time=5)
