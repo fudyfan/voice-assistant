@@ -84,6 +84,9 @@ def main(input_file, output_file, speed, debug=False):
             if input_file == 'in.wav':
                 print("Command completed! Waiting for new input!")
             else:
+                turn_off(BLU)
+                turn_off(RED)
+                turn_off(GRN)
                 break
 
             turn_off(BLU)
