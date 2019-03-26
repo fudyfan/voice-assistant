@@ -4,6 +4,7 @@ import time
 import random
 
 # define pins for each color
+PINS = [12,33,32]
 RED = 12
 GRN = 33
 BLU = 32

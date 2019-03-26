@@ -8,6 +8,7 @@ from alexa_client.alexa_client import helpers
 from low_pass_filter import apply_low_pass_filter
 from time_stretch import stretch
 from wav_convert import convert_16bit, volume_adjust
+import RPi.GPIO as GPIO
 
 
 def main(input_file, output_file, speed, debug=False):
@@ -59,6 +60,8 @@ def main(input_file, output_file, speed, debug=False):
             print("Command completed! Waiting for new input!")
         else:
             break
+
+    GPIO.cleanup()
 
 
 def process_arguments(args):
