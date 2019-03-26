@@ -11,7 +11,9 @@ from wav_convert import convert_16bit, volume_adjust
 
 
 def main(input_file, output_file, speed, debug=False):
-    """Main control flow for Voice Assistant device."""
+    """
+    Main control flow for Voice Assistant device.
+    """
     print("ready for input")
     button = Button(17)
     client = avs.connect_to_avs()
@@ -26,7 +28,7 @@ def main(input_file, output_file, speed, debug=False):
             rec.record(button)
 
         if debug:
-            output_file = input_file or "in.wav"
+            output_file = input_file
         else:
             # low pass filter
             temp_fname = "temp.wav"
@@ -53,7 +55,7 @@ def main(input_file, output_file, speed, debug=False):
             print("playing:" + of)
             os.system('omxplayer ' + of)
 
-        if input_file is None:
+        if input_file == 'in.wav':
             print("Command completed! Waiting for new input!")
         else:
             break
