@@ -11,8 +11,8 @@ from wav_convert import convert_16bit, volume_adjust
 import RPi.GPIO as GPIO
 
 RED = 12
-GRN = 13
-BLU = 18
+GRN = 33
+BLU = 32
 PINS = [RED,GRN,BLU]
 
 def turn_on(pin):
