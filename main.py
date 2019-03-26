@@ -9,6 +9,7 @@ from low_pass_filter import apply_low_pass_filter
 from time_stretch import stretch
 from wav_convert import convert_16bit, volume_adjust
 import RPi.GPIO as GPIO
+import time
 
 RED = 12
 GRN = 33
