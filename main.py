@@ -25,7 +25,7 @@ def main(input_file, output_file, speed, debug=False):
             rec.record(button)
 
         if debug:
-            output_file = input_file
+            output_file = input_file or "in.wav"
         else:
             # low pass filter
             temp_fname = "temp.wav"
