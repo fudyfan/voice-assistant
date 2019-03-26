@@ -16,13 +16,9 @@ BLU = 32
 PINS = [RED,GRN,BLU]
 
 def turn_on(pin):
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
 
 def turn_off(pin):
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
 def main(input_file, output_file, speed, debug=False):
@@ -85,6 +81,7 @@ def main(input_file, output_file, speed, debug=False):
 
         turn_off(BLU)
         turn_off(RED)
+        turn_off(GRN)
 
     GPIO.cleanup()
 
