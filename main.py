@@ -14,12 +14,13 @@ def main(input_file, output_file, speed, debug=False):
     """
     Main control flow for Voice Assistant device.
     """
-    print("ready for input")
     button = Button(17)
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
 
     while True:
+        print("ready for input")
+
         # record from mic
         if input_file == "in.wav":
             button.wait_for_press()
@@ -51,8 +52,8 @@ def main(input_file, output_file, speed, debug=False):
 
         # play back avs response
         for of in outfiles:
-            print("playing:" + of)
-            os.system('omxplayer ' + of)
+            print("playing: " + of)
+            os.system("omxplayer " + of)
 
         if input_file == 'in.wav':
             print("Command completed! Waiting for new input!")
