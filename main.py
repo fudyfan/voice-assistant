@@ -2,6 +2,7 @@ import argparse
 import sys
 import os
 import avs
+from processing import Processing
 from recording import Recording
 from gpiozero import Button
 from alexa_client.alexa_client import helpers
@@ -14,29 +15,34 @@ import time
 RED = 12
 GRN = 33
 BLU = 32
-PINS = [RED,GRN,BLU]
+PINS = [RED, GRN, BLU]
+
 
 def turn_on_all():
     for pin in PINS:
         turn_on(pin)
 
+
 def turn_off_all():
     for pin in PINS:
         turn_off(pin)
+
 
 def turn_on(pin):
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
 
+
 def turn_off(pin):
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
+
 def launch_menu(button):
     print("starting menu")
-    
+
     # flash white 2 times
     turn_off_all()
     time.sleep(1)
@@ -68,6 +74,7 @@ def launch_menu(button):
                     print("selected speed 4")
                     return 4.0
             turn_off(pin)
+
 
 def main(input_file, output_file, speed, debug=False):
     """
@@ -103,7 +110,7 @@ def main(input_file, output_file, speed, debug=False):
                 turn_off(GRN)
                 turn_on(BLU)
                 rec.record(button)
-            
+
             turn_off(GRN)
             turn_off(BLU)
 
@@ -144,7 +151,7 @@ def main(input_file, output_file, speed, debug=False):
                 break
 
             turn_off_all()
-    
+
     except KeyboardInterrupt:
         turn_off_all()
         GPIO.cleanup()
