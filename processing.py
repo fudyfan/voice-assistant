@@ -16,7 +16,7 @@ class Processing:
         self.speed = speed
         self.decibels = decibels
 
-    def apply_low_pass_filter(self):
+    def low_pass_filter(self):
         with contextlib.closing(wave.open(self.input_file, 'rb')) as spf:
             sampleRate = spf.getframerate()
             ampWidth = spf.getsampwidth()
@@ -46,7 +46,7 @@ class Processing:
             wav_file.writeframes(filtered.tobytes('C'))
             wav_file.close()
 
-    def stretch(self):
+    def time_stretch(self):
         """Phase-vocoder time stretch function."""
 
         # 1. Load the wav file, resample

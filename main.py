@@ -6,9 +6,6 @@ from processing import Processing
 from recording import Recording
 from gpiozero import Button
 from alexa_client.alexa_client import helpers
-from low_pass_filter import apply_low_pass_filter
-from time_stretch import stretch
-from wav_convert import convert_16bit, volume_adjust
 import RPi.GPIO as GPIO
 import time
 
@@ -118,21 +115,14 @@ def main(input_file, output_file, speed, debug=False):
             if debug:
                 output_file = input_file
             else:
-                # low pass filter
-                temp_fname = "temp.wav"
+                audio_process = Processing(input_file, output_file, speed, 15)
                 print("Applying low-pass filter to {}".format(input_file))
-                apply_low_pass_filter(input_file, temp_fname)
-
-                # speed up
+                audio_process.low_pass_filter()
                 print("Speeding up by factor of {}".format(speed))
-                stretch(temp_fname, output_file, speed)
-
-                # may not be necessary, or can try to do this dynamically
-                volume_adjust(output_file, 15)
-
-                # make sure formatted for avs
+                audio_process.time_stretch()
+                audio_process.volume_adjust()
                 print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
-                convert_16bit(output_file)
+                audio_process.convert_16bit()
 
             # send to avs
             outfiles = avs.send_rec_to_avs(output_file, client)
