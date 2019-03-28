@@ -4,7 +4,7 @@ import soundfile
 import wave
 import math
 import contextlib
-from low_pass_filter import *
+from lowpass_helpers import *
 
 
 class Processing:
@@ -17,6 +17,7 @@ class Processing:
         self.decibels = decibels
 
     def low_pass_filter(self):
+        print("Applying low-pass filter to " + self.input_file)
         with contextlib.closing(wave.open(self.input_file, 'rb')) as spf:
             sampleRate = spf.getframerate()
             ampWidth = spf.getsampwidth()
@@ -48,6 +49,7 @@ class Processing:
 
     def time_stretch(self):
         """Phase-vocoder time stretch function."""
+        print("Speeding up by factor of " + str(self.speed))
 
         # 1. Load the wav file, resample
         y, sr = librosa.load(self.temp_file, sr=16000, mono=True)
@@ -63,5 +65,6 @@ class Processing:
         voice.export(self.temp_file, "wav")
 
     def convert_16bit(self):
+        print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
         data, samplerate = soundfile.read(self.temp_file)
         soundfile.write(self.output_file, data, samplerate, subtype='PCM_16')

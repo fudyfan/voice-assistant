@@ -116,12 +116,9 @@ def main(input_file, output_file, speed, debug=False):
                 output_file = input_file
             else:
                 audio_process = Processing(input_file, output_file, speed, 15)
-                print("Applying low-pass filter to {}".format(input_file))
                 audio_process.low_pass_filter()
-                print("Speeding up by factor of {}".format(speed))
                 audio_process.time_stretch()
                 audio_process.volume_adjust()
-                print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
                 audio_process.convert_16bit()
 
             # send to avs
