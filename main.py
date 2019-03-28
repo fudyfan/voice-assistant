@@ -2,41 +2,44 @@ import argparse
 import sys
 import os
 import avs
+from processing import Processing
 from recording import Recording
 from gpiozero import Button
 from alexa_client.alexa_client import helpers
-from low_pass_filter import apply_low_pass_filter
-from time_stretch import stretch
-from wav_convert import convert_16bit, volume_adjust
 import RPi.GPIO as GPIO
 import time
 
 RED = 12
 GRN = 33
 BLU = 32
-PINS = [RED,GRN,BLU]
+PINS = [RED, GRN, BLU]
+
 
 def turn_on_all():
     for pin in PINS:
         turn_on(pin)
 
+
 def turn_off_all():
     for pin in PINS:
         turn_off(pin)
+
 
 def turn_on(pin):
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
 
+
 def turn_off(pin):
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
+
 def launch_menu(button):
     print("starting menu")
-    
+
     # flash white 2 times
     turn_off_all()
     time.sleep(1)
@@ -68,6 +71,7 @@ def launch_menu(button):
                     print("selected speed 4")
                     return 4.0
             turn_off(pin)
+
 
 def main(input_file, output_file, speed, debug=False):
     """
@@ -103,7 +107,7 @@ def main(input_file, output_file, speed, debug=False):
                 turn_off(GRN)
                 turn_on(BLU)
                 rec.record(button)
-            
+
             turn_off(GRN)
             turn_off(BLU)
 
@@ -111,21 +115,11 @@ def main(input_file, output_file, speed, debug=False):
             if debug:
                 output_file = input_file
             else:
-                # low pass filter
-                temp_fname = "temp.wav"
-                print("Applying low-pass filter to {}".format(input_file))
-                apply_low_pass_filter(input_file, temp_fname)
-
-                # speed up
-                print("Speeding up by factor of {}".format(speed))
-                stretch(temp_fname, output_file, speed)
-
-                # may not be necessary, or can try to do this dynamically
-                volume_adjust(output_file, 15)
-
-                # make sure formatted for avs
-                print("Converting to Signed 16 bit Little Endian, Rate 16000 Hz, Mono")
-                convert_16bit(output_file)
+                audio_process = Processing(input_file, output_file, speed, 15)
+                audio_process.low_pass_filter()
+                audio_process.time_stretch()
+                audio_process.volume_adjust()
+                audio_process.convert_16bit()
 
             # send to avs
             outfiles = avs.send_rec_to_avs(output_file, client)
@@ -144,7 +138,7 @@ def main(input_file, output_file, speed, debug=False):
                 break
 
             turn_off_all()
-    
+
     except KeyboardInterrupt:
         turn_off_all()
         GPIO.cleanup()
