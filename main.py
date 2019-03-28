@@ -43,7 +43,7 @@ def launch_menu(button):
     # flash white 2 times
     turn_off_all()
     time.sleep(1)
-    for i in range(0, 2):
+    for _ in range(2):
         turn_on_all()
         time.sleep(1)
         turn_off_all()
@@ -82,6 +82,7 @@ def main(input_file, output_file, speed, debug=False):
     button = Button(17)
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
+    audio_process = Processing(input_file, output_file, speed, 15)
 
     try:
         while True:
@@ -93,7 +94,7 @@ def main(input_file, output_file, speed, debug=False):
                 button.wait_for_press()
 
                 # check if should launch menu, requires holding for 5 sec
-                for i in range(100):
+                for _ in range(100):
                     if not button.is_pressed:
                         break
                     time.sleep(0.05)
@@ -115,11 +116,7 @@ def main(input_file, output_file, speed, debug=False):
             if debug:
                 output_file = input_file
             else:
-                audio_process = Processing(input_file, output_file, speed, 15)
-                audio_process.low_pass_filter()
-                audio_process.time_stretch()
-                audio_process.volume_adjust()
-                audio_process.convert_16bit()
+                audio_process.apply()
 
             # send to avs
             outfiles = avs.send_rec_to_avs(output_file, client)
