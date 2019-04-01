@@ -16,6 +16,12 @@ class Processing:
         self.speed = speed
         self.decibels = decibels
 
+    def apply(self):
+        self.low_pass_filter()
+        self.time_stretch()
+        self.volume_adjust()
+        self.convert_16bit
+
     def low_pass_filter(self):
         print("Applying low-pass filter to " + self.input_file)
         with contextlib.closing(wave.open(self.input_file, 'rb')) as spf:
