@@ -87,7 +87,7 @@ def main(input_file, output_file, speed, debug=False):
             # outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
 
             # play back avs response
-            light.change_color(PUR)
+            light.change_color(led.PUR)
             for of in outfiles:
                 print("playing: " + of)
                 os.system("omxplayer " + of)
