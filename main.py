@@ -30,10 +30,10 @@ def launch_menu(button, led):
             if button.is_pressed:
                 led.change_color((), off_c=ALL)
                 button.wait_for_release()
-                if pin == RED:
+                if color == RED:
                     print("selected speed 2")
                     return 2.0
-                elif pin == GRN:
+                elif color == GRN:
                     print("selected speed 3")
                     return 3.0
                 else:
@@ -46,7 +46,6 @@ def main(input_file, output_file, speed, debug=False):
     Main control flow for Voice Assistant device.
     """
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(PINS, GPIO.OUT, initial=GPIO.LOW)
     button = Button(17)
     led = LED()
     client = avs.connect_to_avs()

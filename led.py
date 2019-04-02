@@ -10,6 +10,7 @@ ALL = (RED, GRN, BLU)
 class LED:
     def __init__(self):
         self.PINS = [*RED,*GRN,*BLU]
+        GPIO.setup(self.PINS, GPIO.OUT, initial=GPIO.LOW)
 
     def turn_on(self, pin):
         GPIO.setmode(GPIO.BOARD)
