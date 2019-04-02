@@ -1,15 +1,15 @@
 import RPi.GPIO as GPIO
 import time
 
-RED = (12)
-GRN = (33)
-BLU = (32)
-PUR = (RED, BLU)
-ALL = (RED, GRN, BLU)
+RED = [12]
+GRN = [33]
+BLU = [32]
+PUR = [RED, BLU]
+ALL = [RED, GRN, BLU]
 
 class LED:
     def __init__(self):
-        self.PINS = [RED,GRN,BLU]
+        self.PINS = [*RED,*GRN,*BLU]
         GPIO.setup(self.PINS, GPIO.OUT, initial=GPIO.LOW)
 
     def turn_on(self, pin):
