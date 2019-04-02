@@ -47,7 +47,7 @@ def main(input_file, output_file, speed, debug=False):
     """
     GPIO.setmode(GPIO.BOARD)
     button = Button(17)
-    led = LED()
+    led = led.LED()
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
     audio_process = Processing(input_file, output_file, speed, 15)
