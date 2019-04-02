@@ -8,59 +8,28 @@ from gpiozero import Button
 from alexa_client.alexa_client import helpers
 import RPi.GPIO as GPIO
 import time
+import led
 
-RED = 12
-GRN = 33
-BLU = 32
-PINS = [RED, GRN, BLU]
-
-
-def turn_on_all():
-    for pin in PINS:
-        turn_on(pin)
-
-
-def turn_off_all():
-    for pin in PINS:
-        turn_off(pin)
-
-
-def turn_on(pin):
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.HIGH)
-
-
-def turn_off(pin):
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.LOW)
-
-
-def launch_menu(button):
+def launch_menu(button, led):
     print("starting menu")
 
     # flash white 2 times
-    turn_off_all()
+    led.change_color((), off_c=ALL)
     time.sleep(1)
     for _ in range(2):
-        turn_on_all()
-        time.sleep(1)
-        turn_off_all()
-        time.sleep(1)
+        led.flash(ALL)
 
     # make sure user lets go of button
     button.wait_for_release()
 
     # iterate through options until user makes a choice
     while True:
-        for pin in PINS:
-            turn_on(pin)
+        for color in ALL:
+            led.change_color(color)
             time.sleep(1.5)
             if button.is_pressed:
-                turn_off(pin)
+                led.change_color((), off_c=ALL)
                 button.wait_for_release()
-                turn_off(pin)
                 if pin == RED:
                     print("selected speed 2")
                     return 2.0
@@ -70,7 +39,6 @@ def launch_menu(button):
                 else:
                     print("selected speed 4")
                     return 4.0
-            turn_off(pin)
 
 
 def main(input_file, output_file, speed, debug=False):
@@ -80,6 +48,7 @@ def main(input_file, output_file, speed, debug=False):
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(PINS, GPIO.OUT, initial=GPIO.LOW)
     button = Button(17)
+    led = LED()
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
     audio_process = Processing(input_file, output_file, speed, 15)
@@ -87,7 +56,7 @@ def main(input_file, output_file, speed, debug=False):
     try:
         while True:
             print("ready for input")
-            turn_on(GRN)
+            led.change_color(GRN)
 
             # record from mic
             if input_file == "in.wav":
@@ -105,14 +74,10 @@ def main(input_file, output_file, speed, debug=False):
                     continue
 
                 rec = Recording(input_file)
-                turn_off(GRN)
-                turn_on(BLU)
+                led.change_color(BLU)
                 rec.record(button)
 
-            turn_off(GRN)
-            turn_off(BLU)
-
-            turn_on(RED)
+            led.change_color(RED)
             if debug:
                 output_file = input_file
             else:
@@ -123,7 +88,7 @@ def main(input_file, output_file, speed, debug=False):
             # outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
 
             # play back avs response
-            turn_on(BLU)
+            led.change_color(PUR)
             for of in outfiles:
                 print("playing: " + of)
                 os.system("omxplayer " + of)
@@ -131,14 +96,11 @@ def main(input_file, output_file, speed, debug=False):
             if input_file == 'in.wav':
                 print("Command completed! Waiting for new input!")
             else:
-                turn_off_all()
+                led.interrupt()
                 break
 
-            turn_off_all()
-
     except KeyboardInterrupt:
-        turn_off_all()
-        GPIO.cleanup()
+        led.interrupt()
 
 
 def process_arguments(args):

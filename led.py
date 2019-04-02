@@ -1,37 +1,41 @@
 import RPi.GPIO as GPIO
+import time
+
+RED = (12)
+GRN = (33)
+BLU = (32)
+PUR = (RED, BLU)
+ALL = (RED, GRN, BLU)
+
 class LED:
-    RED = 0
-    GRN = 0
-    BLU = 0
     def __init__(self):
-        self.RED = 12
-        self.GRN = 33
-        self.BLU = 32
-        self.PINS = [RED,GRN,BLU]
+        self.PINS = [*RED,*GRN,*BLU]
 
-    def turn_on_all():
-        for pin in PINS:
-            turn_on(pin)
-    
-    def turn_off_all():
-        for pin in PINS:
-            turn_off(pin)
-
-    def turn_on(pin):
+    def turn_on(self, pin):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(pin, GPIO.HIGH)
 
-    def turn_off(pin):
+    def turn_off(self, pin):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(pin, GPIO.LOW)
 
-    def change_color(off_c, on_c):
-        turn_off(off_c)
-        turn_on(on_c)
+    # off_c and on_c are iterables
+    def change_color(self, on_c, off_c=ALL):
+        for p in off_c:
+            turn_off(off_c)
+        for p in on_c:
+            turn_on(on_c)
 
-    def interupt():
+    # on_c is an iterable
+    def flash(self, on_c, off_c=ALL):
+        turn_on_all()
+        time.sleep(1)
+        turn_off_all()
+        time.sleep(1)
+
+    def interrupt(self):
         turn_off_all()
         GPIO.cleanup()
 
