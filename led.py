@@ -25,15 +25,15 @@ class LED:
     # off_c and on_c are iterables
     def change_color(self, on_c, off_c=ALL):
         for p in off_c:
-            turn_off(off_c)
+            turn_off(p)
         for p in on_c:
-            turn_on(on_c)
+            turn_on(p)
 
     # on_c is an iterable
     def flash(self, on_c, off_c=ALL):
-        turn_on_all()
+        change_color(on_c, off_c)
         time.sleep(1)
-        turn_off_all()
+        change_color((), off_c=ALL)
         time.sleep(1)
 
     def interrupt(self):
