@@ -14,26 +14,26 @@ def launch_menu(button, light):
     print("starting menu")
 
     # flash white 2 times
-    light.change_color((), off_c=ALL)
+    light.change_color((), off_c=led.ALL)
     time.sleep(1)
     for _ in range(2):
-        light.flash(ALL)
+        light.flash(led.ALL)
 
     # make sure user lets go of button
     button.wait_for_release()
 
     # iterate through options until user makes a choice
     while True:
-        for color in ALL:
+        for color in led.ALL:
             light.change_color(color)
             time.sleep(1.5)
             if button.is_pressed:
-                light.change_color((), off_c=ALL)
+                light.change_color((), off_c=led.ALL)
                 button.wait_for_release()
-                if color == RED:
+                if color == led.RED:
                     print("selected speed 2")
                     return 2.0
-                elif color == GRN:
+                elif color == led.GRN:
                     print("selected speed 3")
                     return 3.0
                 else:
@@ -55,7 +55,7 @@ def main(input_file, output_file, speed, debug=False):
     try:
         while True:
             print("ready for input")
-            light.change_color(GRN)
+            light.change_color(led.GRN)
 
             # record from mic
             if input_file == "in.wav":
@@ -73,10 +73,10 @@ def main(input_file, output_file, speed, debug=False):
                     continue
 
                 rec = Recording(input_file)
-                light.change_color(BLU)
+                light.change_color(led.BLU)
                 rec.record(button)
 
-            light.change_color(RED)
+            light.change_color(led.RED)
             if debug:
                 output_file = input_file
             else:
