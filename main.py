@@ -69,7 +69,7 @@ def main(input_file, output_file, speed, debug=False):
 
                 # at this point know they've held for 5 sec
                 if button.is_pressed:
-                    speed = launch_menu(button)
+                    speed = launch_menu(button, light)
                     continue
 
                 rec = Recording(input_file)
