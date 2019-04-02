@@ -10,14 +10,14 @@ import RPi.GPIO as GPIO
 import time
 import led
 
-def launch_menu(button, led):
+def launch_menu(button, light):
     print("starting menu")
 
     # flash white 2 times
-    led.change_color((), off_c=ALL)
+    light.change_color((), off_c=ALL)
     time.sleep(1)
     for _ in range(2):
-        led.flash(ALL)
+        light.flash(ALL)
 
     # make sure user lets go of button
     button.wait_for_release()
@@ -25,10 +25,10 @@ def launch_menu(button, led):
     # iterate through options until user makes a choice
     while True:
         for color in ALL:
-            led.change_color(color)
+            light.change_color(color)
             time.sleep(1.5)
             if button.is_pressed:
-                led.change_color((), off_c=ALL)
+                light.change_color((), off_c=ALL)
                 button.wait_for_release()
                 if color == RED:
                     print("selected speed 2")
@@ -47,7 +47,7 @@ def main(input_file, output_file, speed, debug=False):
     """
     GPIO.setmode(GPIO.BOARD)
     button = Button(17)
-    led = led.LED()
+    light = led.LED()
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
     audio_process = Processing(input_file, output_file, speed, 15)
@@ -55,7 +55,7 @@ def main(input_file, output_file, speed, debug=False):
     try:
         while True:
             print("ready for input")
-            led.change_color(GRN)
+            light.change_color(GRN)
 
             # record from mic
             if input_file == "in.wav":
@@ -73,10 +73,10 @@ def main(input_file, output_file, speed, debug=False):
                     continue
 
                 rec = Recording(input_file)
-                led.change_color(BLU)
+                light.change_color(BLU)
                 rec.record(button)
 
-            led.change_color(RED)
+            light.change_color(RED)
             if debug:
                 output_file = input_file
             else:
@@ -87,7 +87,7 @@ def main(input_file, output_file, speed, debug=False):
             # outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
 
             # play back avs response
-            led.change_color(PUR)
+            light.change_color(PUR)
             for of in outfiles:
                 print("playing: " + of)
                 os.system("omxplayer " + of)
@@ -95,11 +95,11 @@ def main(input_file, output_file, speed, debug=False):
             if input_file == 'in.wav':
                 print("Command completed! Waiting for new input!")
             else:
-                led.interrupt()
+                light.interrupt()
                 break
 
     except KeyboardInterrupt:
-        led.interrupt()
+        light.interrupt()
 
 
 def process_arguments(args):
