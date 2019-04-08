@@ -20,7 +20,7 @@ class Processing:
         self.low_pass_filter()
         self.time_stretch()
         self.volume_adjust()
-        self.convert_16bit
+        self.convert_16bit()
 
     def low_pass_filter(self):
         print("Applying low-pass filter to " + self.input_file)
