@@ -6,6 +6,7 @@ GRN = [33]
 BLU = [32]
 PUR = [RED, BLU]
 YEL = [RED, GRN]
+MYSTERY = [BLU, GRN]
 ALL = [RED, GRN, BLU]
 
 class LED:

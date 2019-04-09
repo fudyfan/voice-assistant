@@ -89,7 +89,7 @@ def main(input_file, output_file, speed, debug=False):
             # play back avs response
             light.change_color(led.PUR)
             if not outfiles:
-                light.change_color(led.YEL)
+                light.change_color(led.MYSTERY)
                 print("Error, no outfiles")
                 time.sleep(1)
 
