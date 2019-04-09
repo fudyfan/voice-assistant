@@ -76,7 +76,7 @@ def main(input_file, output_file, speed, debug=False):
                 light.change_color(led.BLU)
                 rec.record(button)
 
-            light.change_color(led.RED)
+            light.change_color(led.ALL)
             if debug:
                 output_file = input_file
             else:
@@ -89,7 +89,7 @@ def main(input_file, output_file, speed, debug=False):
             # play back avs response
             light.change_color(led.PUR)
             if not outfiles:
-                light.change_color(led.MYSTERY)
+                light.change_color(led.RED)
                 print("Error, no outfiles")
                 time.sleep(1)
 
