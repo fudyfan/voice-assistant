@@ -73,8 +73,8 @@ def main(input_file, output_file, speed, debug=False):
                     continue
 
                 rec = Recording(input_file)
-                light.change_color(led.BLU)
                 rec.record(button)
+                light.change_color(led.BLU)
 
             light.change_color(led.RED)
             if debug:
