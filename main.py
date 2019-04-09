@@ -31,14 +31,14 @@ def launch_menu(button, light):
                 light.change_color((), off_c=led.ALL)
                 button.wait_for_release()
                 if color == led.RED:
+                    print("selected speed 1")
+                    return 1.0
+                elif color == led.GRN:
                     print("selected speed 2")
                     return 2.0
-                elif color == led.GRN:
+                else:
                     print("selected speed 3")
                     return 3.0
-                else:
-                    print("selected speed 4")
-                    return 4.0
 
 
 def main(input_file, output_file, speed, debug=False):
