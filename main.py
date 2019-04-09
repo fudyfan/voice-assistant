@@ -88,6 +88,11 @@ def main(input_file, output_file, speed, debug=False):
 
             # play back avs response
             light.change_color(led.PUR)
+            if not outfiles:
+                light.change_color(led.YEL)
+                print("Error, no outfiles")
+                time.sleep(1)
+
             for of in outfiles:
                 print("playing: " + of)
                 os.system("omxplayer " + of)
