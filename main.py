@@ -42,6 +42,8 @@ def launch_menu(button, light):
                     print("selected speed 3")
                     return 3.0
 
+def test_func():
+    print("hello from test_func")
 
 def main(input_file, output_file, speed, debug=False):
     """
@@ -49,6 +51,8 @@ def main(input_file, output_file, speed, debug=False):
     """
     GPIO.setmode(GPIO.BOARD)
     button = Button(17)
+    button.hold_time = 2
+    button.when_held = test_func
     light = led.LED()
     # pull last saved speed from json
     with open('save_state.json', 'r') as saveFile:
@@ -61,10 +65,7 @@ def main(input_file, output_file, speed, debug=False):
     os.system("omxplayer audio_instrs/startup.mp3")
     # check if should play tutorial, requires holding for 2 sec
     button.wait_for_press()
-    for _ in range(40):
-        if not button.is_pressed:
-            break
-        time.sleep(0.05)
+
 
     # at this point know they've held for 2 sec
     if button.is_pressed:
