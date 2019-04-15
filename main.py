@@ -49,6 +49,11 @@ def main(input_file, output_file, speed, debug=False):
     GPIO.setmode(GPIO.BOARD)
     button = Button(17)
     light = led.LED()
+    # pull last saved speed from json
+    with open('save_state.json', 'r') as saveFile:
+        response = json.load(saveFile)
+    speed = response['savedSpeed']
+
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
     audio_process = Processing(input_file, output_file, speed, 15)
@@ -83,6 +88,8 @@ def main(input_file, output_file, speed, debug=False):
                 # at this point know they've held for 5 sec
                 if button.is_pressed:
                     speed = launch_menu(button, light)
+                    with open('save_state.json', 'w') as saveFile:
+                        saveFile.write(json.loads({"savedSpeed":speed}, indent=4))
                     continue
 
                 rec = Recording(input_file)
