@@ -51,6 +51,16 @@ def main(input_file, output_file, speed, debug=False):
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
     audio_process = Processing(input_file, output_file, speed, 15)
+    os.system("omxplayer audio_instrs/startup.mp3")
+    # check if should play tutorial, requires holding for 2 sec
+    for _ in range(40):
+        if not button.is_pressed:
+            break
+        time.sleep(0.05)
+
+    # at this point know they've held for 2 sec
+    if button.is_pressed:
+        os.system("omxplayer audio_instrs/tutorial.mp3")
 
     try:
         while True:
@@ -90,6 +100,7 @@ def main(input_file, output_file, speed, debug=False):
             light.change_color(led.PUR)
             if not outfiles:
                 light.change_color(led.RED)
+                os.system("omxplayer audio_instrs/alexa-noresponse.mp3")
                 print("Error, no outfiles")
                 time.sleep(1)
 
