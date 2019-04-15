@@ -1,5 +1,6 @@
 import pyaudio
 import wave
+import time
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -23,11 +24,14 @@ class Recording:
         print("* recording")
 
     def record(self, button):
+        # for timeout
+        time_start = time.time()
         while True:
             data = self.stream.read(CHUNK)
             self.frames.append(data)
+            time2 = time.time()
 
-            if button.is_pressed:
+            if button.is_pressed or ( (time2 - time_start) >= 30 ):
                 print("* done recording")
 
                 self.stream.stop_stream()

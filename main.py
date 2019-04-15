@@ -11,6 +11,7 @@ import time
 import led
 
 def launch_menu(button, light):
+    # launch
     print("starting menu")
 
     # flash white 2 times
