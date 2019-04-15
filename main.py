@@ -54,6 +54,7 @@ def main(input_file, output_file, speed, debug=False):
     audio_process = Processing(input_file, output_file, speed, 15)
     os.system("omxplayer audio_instrs/startup.mp3")
     # check if should play tutorial, requires holding for 2 sec
+    button.wait_for_press()
     for _ in range(40):
         if not button.is_pressed:
             break
@@ -62,6 +63,7 @@ def main(input_file, output_file, speed, debug=False):
     # at this point know they've held for 2 sec
     if button.is_pressed:
         os.system("omxplayer audio_instrs/tutorial.mp3")
+        button.wait_for_release()
 
     try:
         while True:
