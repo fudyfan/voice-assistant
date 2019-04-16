@@ -84,7 +84,7 @@ def main(input_file, output_file, speed, debug=False):
     speed = float(response['savedSpeed'])
 
     client = avs.connect_to_avs()
-    dialog_req_id = helpers.generate_unique_id()
+    dialog_req_id = [helpers.generate_unique_id()]
     audio_process = Processing(input_file, output_file, speed, 15)
     os.system("omxplayer audio_instrs/startup.mp3")
     

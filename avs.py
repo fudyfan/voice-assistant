@@ -1,4 +1,5 @@
 from alexa_client import AlexaClient
+from alexa_client.alexa_client import helpers
 
 
 def connect_to_avs():
@@ -15,16 +16,23 @@ def send_rec_to_avs(wav_file, client, id=None):
     outfiles = []
     with open(wav_file, 'rb') as f:
         if id is not None:
-            alex_returned = client.send_audio_file(f, dialog_request_id=id)
+            alex_returned = client.send_audio_file(f, dialog_request_id=id[0])
         else:
             alex_returned = client.send_audio_file(f)
         if alex_returned is None:
             print("Panicking")
             return outfiles
 
+        need_reset = True
         for i, directive in enumerate(alex_returned):
+            if directive.name == 'ExpectSpeech':
+                id = [directive.dialog_request_id]
+                need_reset = False
+
             if directive.name in ['Speak', 'Play']:
                 with open('./output_{}.mp3'.format(i), 'wb') as f:
                     f.write(directive.audio_attachment)
                     outfiles += ['output_{}.mp3'.format(i)]
+        if need_reset:
+            id = [helpers.generate_unique_id()]
     return outfiles
