@@ -34,7 +34,8 @@ def launch_menu(button, light):
     button.wait_for_release()
 
     # iterate through options until user makes a choice
-    while True:
+    cont = True
+    while cont:
         for color in led.ALL:
             light.change_color(color)
             time.sleep(1.5)
@@ -44,14 +45,17 @@ def launch_menu(button, light):
                 if color == led.RED:
                     print("selected speed 1")
                     SPEED = 1.0
+                    cont = False
                     break
                 elif color == led.GRN:
                     print("selected speed 2")
                     SPEED = 2.0
+                    cont = False
                     break
                 else:
                     print("selected speed 3")
                     SPEED = 3.0
+                    cont = False
                     break
 
     with open('save_state.json', 'w') as saveFile:
