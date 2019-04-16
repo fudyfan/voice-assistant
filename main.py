@@ -74,7 +74,7 @@ def main(input_file, output_file, speed, debug=False):
     # pull last saved speed from json
     with open('save_state.json', 'r') as saveFile:
         response = json.load(saveFile)
-    SPEED = response['savedSpeed']
+    SPEED = float(response['savedSpeed'])
 
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
