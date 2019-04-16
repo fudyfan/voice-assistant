@@ -59,7 +59,7 @@ def launch_menu(button, light):
                     break
 
     with open('save_state.json', 'w') as saveFile:
-        saveFile.write(json.load({"savedSpeed":SPEED}, indent=4))
+        saveFile.write(json.dumps({"savedSpeed":SPEED}, indent=4))
 
     IN_MENU = False
 
