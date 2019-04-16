@@ -12,13 +12,11 @@ import led
 import json
 from functools import partial
 
-SPEED = 2
 IN_TUTORIAL = False
 IN_MENU = False
 
-def launch_menu(button, light):
+def launch_menu(button, light, processor):
     global IN_MENU
-    global SPEED
     IN_MENU = True
 
     # launch
@@ -44,22 +42,24 @@ def launch_menu(button, light):
                 button.wait_for_release()
                 if color == led.RED:
                     print("selected speed 1")
-                    SPEED = 1.0
+                    speed = 1.0
                     cont = False
                     break
                 elif color == led.GRN:
                     print("selected speed 2")
-                    SPEED = 2.0
+                    speed = 2.0
                     cont = False
                     break
                 else:
                     print("selected speed 3")
-                    SPEED = 3.0
+                    speed = 3.0
                     cont = False
                     break
 
     with open('save_state.json', 'w') as saveFile:
-        saveFile.write(json.dumps({"savedSpeed":SPEED}, indent=4))
+        saveFile.write(json.dumps({"savedSpeed":speed}, indent=4))
+
+    processor.set_speed(speed)
 
     IN_MENU = False
 
@@ -81,12 +81,11 @@ def main(input_file, output_file, speed, debug=False):
     # pull last saved speed from json
     with open('save_state.json', 'r') as saveFile:
         response = json.load(saveFile)
-    global SPEED
-    SPEED = float(response['savedSpeed'])
+    speed = float(response['savedSpeed'])
 
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
-    audio_process = Processing(input_file, output_file, SPEED, 15)
+    audio_process = Processing(input_file, output_file, speed, 15)
     os.system("omxplayer audio_instrs/startup.mp3")
     
     # check if should play tutorial, requires holding for 2 sec
