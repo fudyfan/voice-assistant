@@ -13,8 +13,12 @@ import json
 from functools import partial
 
 SPEED = 2
+IN_TUTORIAL = False
+IN_MENU = False
 
 def launch_menu(button, light):
+    IN_MENU = True
+
     # launch
     print("starting menu")
 
@@ -51,9 +55,12 @@ def launch_menu(button, light):
     with open('save_state.json', 'w') as saveFile:
         saveFile.write(json.loads({"savedSpeed":SPEED}, indent=4))
 
+    IN_MENU = False
+
 def play_tutorial():
+    IN_TUTORIAL = True
     os.system("omxplayer audio_instrs/tutorial.mp3")
-    time.sleep(78)
+    IN_TUTORIAL = False
 
 def main(input_file, output_file, speed, debug=False):
     """
@@ -83,6 +90,9 @@ def main(input_file, output_file, speed, debug=False):
     #     os.system("omxplayer audio_instrs/tutorial.mp3")
     #     button.wait_for_release()
 
+    if IN_TUTORIAL:
+        time.sleep(78)
+
     # reset hold time/when_held func to go to menu
     button.hold_time = 5
     button.when_held = partial(launch_menu, button, light)
@@ -111,6 +121,9 @@ def main(input_file, output_file, speed, debug=False):
 
                 if button.is_pressed:
                     button.wait_for_release()
+
+                while IN_MENU:
+                    pass
 
                 rec = Recording(input_file)
                 light.change_color(led.BLU)
