@@ -11,6 +11,8 @@ import time
 import led
 import json
 
+SPEED = 2
+
 def launch_menu(button, light):
     # launch
     print("starting menu")
@@ -34,16 +36,22 @@ def launch_menu(button, light):
                 button.wait_for_release()
                 if color == led.RED:
                     print("selected speed 1")
-                    return 1.0
+                    SPEED = 1.0
                 elif color == led.GRN:
                     print("selected speed 2")
-                    return 2.0
+                    SPEED = 2.0
                 else:
                     print("selected speed 3")
-                    return 3.0
+                    SPEED = 3.0
+
+    with open('save_state.json', 'w') as saveFile:
+        saveFile.write(json.loads({"savedSpeed":SPEED}, indent=4))
 
 def test_func():
     print("hello from test_func")
+
+def play_tutorial():
+    os.system("omxplayer audio_instrs/tutorial.mp3")
 
 def main(input_file, output_file, speed, debug=False):
     """
@@ -57,20 +65,25 @@ def main(input_file, output_file, speed, debug=False):
     # pull last saved speed from json
     with open('save_state.json', 'r') as saveFile:
         response = json.load(saveFile)
-    speed = response['savedSpeed']
+    SPEED = response['savedSpeed']
 
     client = avs.connect_to_avs()
     dialog_req_id = helpers.generate_unique_id()
-    audio_process = Processing(input_file, output_file, speed, 15)
+    audio_process = Processing(input_file, output_file, SPEED, 15)
     os.system("omxplayer audio_instrs/startup.mp3")
+    
     # check if should play tutorial, requires holding for 2 sec
-    button.wait_for_press()
-
+    # button.wait_for_press()
+    time.sleep(5)
 
     # at this point know they've held for 2 sec
-    if button.is_pressed:
-        os.system("omxplayer audio_instrs/tutorial.mp3")
-        button.wait_for_release()
+    # if button.is_pressed:
+    #     os.system("omxplayer audio_instrs/tutorial.mp3")
+    #     button.wait_for_release()
+
+    # reset hold time/when_held func to go to menu
+    button.hold_time = 5
+    button.when_held = launch_menu
 
     try:
         while True:
@@ -82,17 +95,20 @@ def main(input_file, output_file, speed, debug=False):
                 button.wait_for_press()
 
                 # check if should launch menu, requires holding for 5 sec
-                for _ in range(100):
-                    if not button.is_pressed:
-                        break
-                    time.sleep(0.05)
+                # for _ in range(100):
+                #     if not button.is_pressed:
+                #         break
+                #     time.sleep(0.05)
 
                 # at this point know they've held for 5 sec
+                # if button.is_pressed:
+                #     speed = launch_menu(button, light)
+                    # with open('save_state.json', 'w') as saveFile:
+                    #     saveFile.write(json.loads({"savedSpeed":speed}, indent=4))
+                    # continue
+
                 if button.is_pressed:
-                    speed = launch_menu(button, light)
-                    with open('save_state.json', 'w') as saveFile:
-                        saveFile.write(json.loads({"savedSpeed":speed}, indent=4))
-                    continue
+                    button.wait_for_release()
 
                 rec = Recording(input_file)
                 light.change_color(led.BLU)
