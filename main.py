@@ -10,6 +10,7 @@ import RPi.GPIO as GPIO
 import time
 import led
 import json
+from functools import partial
 
 SPEED = 2
 
@@ -60,7 +61,7 @@ def main(input_file, output_file, speed, debug=False):
     GPIO.setmode(GPIO.BOARD)
     button = Button(17)
     button.hold_time = 2
-    button.when_held = test_func
+    button.when_held = play_tutorial
     light = led.LED()
     # pull last saved speed from json
     with open('save_state.json', 'r') as saveFile:
@@ -83,7 +84,7 @@ def main(input_file, output_file, speed, debug=False):
 
     # reset hold time/when_held func to go to menu
     button.hold_time = 5
-    button.when_held = launch_menu
+    button.when_held = partial(launch_menu, button, light)
 
     try:
         while True:
