@@ -26,7 +26,7 @@ def send_rec_to_avs(wav_file, client, id=None):
         need_reset = True
         for i, directive in enumerate(alex_returned):
             if directive.name == 'ExpectSpeech':
-                id = [directive.dialog_request_id]
+                id[0] = directive.dialog_request_id
                 need_reset = False
 
             if directive.name in ['Speak', 'Play']:
