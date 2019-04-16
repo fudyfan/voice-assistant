@@ -131,12 +131,10 @@ def main(input_file, output_file, speed, debug=False):
                 if button.is_pressed:
                     button.wait_for_release()
 
-                # while IN_MENU:
-                #     pass
-
                 if IN_MENU:
                     while IN_MENU:
                         pass
+                    light.change_color(led.GRN)
                     button.wait_for_press()
 
                 rec = Recording(input_file)
