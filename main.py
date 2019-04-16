@@ -91,6 +91,7 @@ def main(input_file, output_file, speed, debug=False):
     #     button.wait_for_release()
 
     if IN_TUTORIAL:
+        print("hello in tutorial")
         time.sleep(78)
 
     # reset hold time/when_held func to go to menu
