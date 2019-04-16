@@ -38,21 +38,22 @@ def launch_menu(button, light):
                 if color == led.RED:
                     print("selected speed 1")
                     SPEED = 1.0
+                    break
                 elif color == led.GRN:
                     print("selected speed 2")
                     SPEED = 2.0
+                    break
                 else:
                     print("selected speed 3")
                     SPEED = 3.0
+                    break
 
     with open('save_state.json', 'w') as saveFile:
         saveFile.write(json.loads({"savedSpeed":SPEED}, indent=4))
 
-def test_func():
-    print("hello from test_func")
-
 def play_tutorial():
     os.system("omxplayer audio_instrs/tutorial.mp3")
+    time.sleep(78)
 
 def main(input_file, output_file, speed, debug=False):
     """
