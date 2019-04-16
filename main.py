@@ -103,7 +103,7 @@ def main(input_file, output_file, speed, debug=False):
 
     # reset hold time/when_held func to go to menu
     button.hold_time = 5
-    button.when_held = partial(launch_menu, button, light)
+    button.when_held = partial(launch_menu, button, light, audio_process)
 
     try:
         while True:
