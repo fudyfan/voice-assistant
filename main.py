@@ -80,7 +80,7 @@ def main(input_file, output_file, speed, debug=False):
     light = led.LED()
     # pull last saved speed from json
     with open('save_state.json', 'r') as saveFile:
-        response = json.load(saveFile)
+        response = json.loads(saveFile)
     global SPEED
     SPEED = float(response['savedSpeed'])
 
