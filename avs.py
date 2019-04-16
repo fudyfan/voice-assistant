@@ -34,5 +34,5 @@ def send_rec_to_avs(wav_file, client, id=None):
                     f.write(directive.audio_attachment)
                     outfiles += ['output_{}.mp3'.format(i)]
         if need_reset:
-            id = [helpers.generate_unique_id()]
+            id[0] = helpers.generate_unique_id()
     return outfiles
