@@ -133,8 +133,7 @@ def main(input_file, output_file, speed, debug=False):
                 if IN_MENU:
                     while IN_MENU:
                         pass
-                    light.change_color(led.GRN)
-                    button.wait_for_press()
+                    continue
 
                 rec = Recording(input_file)
                 light.change_color(led.BLU)
