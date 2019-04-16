@@ -17,6 +17,8 @@ IN_TUTORIAL = False
 IN_MENU = False
 
 def launch_menu(button, light):
+    global IN_MENU
+    global SPEED
     IN_MENU = True
 
     # launch
@@ -58,6 +60,7 @@ def launch_menu(button, light):
     IN_MENU = False
 
 def play_tutorial():
+    global IN_TUTORIAL
     IN_TUTORIAL = True
     os.system("omxplayer audio_instrs/tutorial.mp3")
     IN_TUTORIAL = False
@@ -74,6 +77,7 @@ def main(input_file, output_file, speed, debug=False):
     # pull last saved speed from json
     with open('save_state.json', 'r') as saveFile:
         response = json.load(saveFile)
+    global SPEED
     SPEED = float(response['savedSpeed'])
 
     client = avs.connect_to_avs()
