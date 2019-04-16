@@ -146,8 +146,8 @@ def main(input_file, output_file, speed, debug=False):
                 audio_process.apply()
 
             # send to avs
-            outfiles = avs.send_rec_to_avs(output_file, client)
-            # outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
+            # outfiles = avs.send_rec_to_avs(output_file, client)
+            outfiles = avs.send_rec_to_avs(output_file, client, dialog_req_id)
 
             # play back avs response
             light.change_color(led.PUR)
