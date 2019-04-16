@@ -135,7 +135,8 @@ def main(input_file, output_file, speed, debug=False):
                 #     pass
 
                 if IN_MENU:
-                    button.wait_for_release()
+                    while IN_MENU:
+                        pass
                     button.wait_for_press()
 
                 rec = Recording(input_file)
