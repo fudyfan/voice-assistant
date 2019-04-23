@@ -33,9 +33,12 @@ def launch_menu(button, light, processor):
 
     # iterate through options until user makes a choice
     cont = True
+    menu_filenames = ["audio_instrs/1x.mp3", "audio_instrs/2x.mp3", "audio_instrs/3x.mp3"]
     while cont:
-        for color in led.ALL:
+        for i in range(3):
+            color = led.ALL[i]
             light.change_color(color)
+            os.system("mpg321 " + menu_filenames[i])
             time.sleep(1.5)
             if button.is_pressed:
                 light.change_color((), off_c=led.ALL)
@@ -97,13 +100,7 @@ def main(input_file, output_file, speed, debug=False):
     os.system("mpg321 audio_instrs/startup.mp3")
     
     # check if should play tutorial, requires holding for 2 sec
-    # button.wait_for_press()
     time.sleep(5)
-
-    # at this point know they've held for 2 sec
-    # if button.is_pressed:
-    #     os.system("mpg321 audio_instrs/tutorial.mp3")
-    #     button.wait_for_release()
 
     if IN_TUTORIAL:
         print("hello in tutorial")
@@ -121,19 +118,6 @@ def main(input_file, output_file, speed, debug=False):
             # record from mic
             if input_file == "in.wav":
                 button.wait_for_press()
-
-                # check if should launch menu, requires holding for 5 sec
-                # for _ in range(100):
-                #     if not button.is_pressed:
-                #         break
-                #     time.sleep(0.05)
-
-                # at this point know they've held for 5 sec
-                # if button.is_pressed:
-                #     speed = launch_menu(button, light)
-                    # with open('save_state.json', 'w') as saveFile:
-                    #     saveFile.write(json.loads({"savedSpeed":speed}, indent=4))
-                    # continue
 
                 if button.is_pressed:
                     button.wait_for_release()
