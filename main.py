@@ -83,6 +83,14 @@ def main(input_file, output_file, speed, debug=False):
         response = json.load(saveFile)
     speed = float(response['savedSpeed'])
 
+    if speed == 1:
+        light.change_color(light.RED)
+    elif speed == 2:
+        light.change_color(light.GREEN)
+    else:
+        light.change_color(light.BLUE)
+
+
     client = avs.connect_to_avs()
     dialog_req_id = [helpers.generate_unique_id()]
     audio_process = Processing(input_file, output_file, speed, 15)
