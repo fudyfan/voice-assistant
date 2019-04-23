@@ -89,13 +89,13 @@ def main(input_file, output_file, speed, debug=False):
 
     if speed == 1:
         light.flash(led.RED)
-        os.system("mpg321 " + menu_filenames[speed - 1])
+        os.system("mpg321 " + menu_filenames[int(speed) - 1])
     elif speed == 2:
         light.flash(led.GRN)
-        os.system("mpg321 " + menu_filenames[speed - 1])
+        os.system("mpg321 " + menu_filenames[int(speed) - 1])
     else:
         light.flash(led.BLUE)
-        os.system("mpg321 " + menu_filenames[speed - 1])
+        os.system("mpg321 " + menu_filenames[int(speed) - 1])
 
 
     client = avs.connect_to_avs()
