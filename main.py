@@ -91,6 +91,13 @@ def main(input_file, output_file, speed, debug=False):
     dialog_req_id = [helpers.generate_unique_id()]
     audio_process = Processing(input_file, output_file, speed, 15)
     os.system("mpg321 audio_instrs/startup.mp3")
+    
+    # check if should play tutorial, requires holding for 2 sec
+    time.sleep(5)
+
+    if IN_TUTORIAL:
+        print("hello in tutorial")
+        time.sleep(78)
 
     if speed == 1:
         os.system("mpg321 " + menu_filenames[int(speed) - 1])
@@ -101,13 +108,6 @@ def main(input_file, output_file, speed, debug=False):
     else:
         os.system("mpg321 " + menu_filenames[int(speed) - 1])
         light.flash(led.BLUE)
-    
-    # check if should play tutorial, requires holding for 2 sec
-    time.sleep(5)
-
-    if IN_TUTORIAL:
-        print("hello in tutorial")
-        time.sleep(78)
 
     # reset hold time/when_held func to go to menu
     button.hold_time = 5
