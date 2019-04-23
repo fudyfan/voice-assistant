@@ -86,7 +86,7 @@ def main(input_file, output_file, speed, debug=False):
     if speed == 1:
         light.change_color(light.RED)
     elif speed == 2:
-        light.change_color(light.GREEN)
+        light.change_color(light.GRN)
     else:
         light.change_color(light.BLUE)
 
