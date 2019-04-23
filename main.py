@@ -84,11 +84,11 @@ def main(input_file, output_file, speed, debug=False):
     speed = float(response['savedSpeed'])
 
     if speed == 1:
-        light.change_color(light.RED)
+        light.flash(led.RED)
     elif speed == 2:
-        light.change_color(light.GRN)
+        light.flash(led.GRN)
     else:
-        light.change_color(light.BLUE)
+        light.flash(led.BLUE)
 
 
     client = avs.connect_to_avs()
@@ -116,7 +116,7 @@ def main(input_file, output_file, speed, debug=False):
     try:
         while True:
             print("ready for input")
-            light.change_color(light.GRN)
+            light.change_color(led.GRN)
 
             # record from mic
             if input_file == "in.wav":
