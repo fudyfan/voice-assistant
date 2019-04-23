@@ -87,6 +87,11 @@ def main(input_file, output_file, speed, debug=False):
         response = json.load(saveFile)
     speed = float(response['savedSpeed'])
 
+    client = avs.connect_to_avs()
+    dialog_req_id = [helpers.generate_unique_id()]
+    audio_process = Processing(input_file, output_file, speed, 15)
+    os.system("mpg321 audio_instrs/startup.mp3")
+
     if speed == 1:
         os.system("mpg321 " + menu_filenames[int(speed) - 1])
         light.flash(led.RED)
@@ -96,12 +101,6 @@ def main(input_file, output_file, speed, debug=False):
     else:
         os.system("mpg321 " + menu_filenames[int(speed) - 1])
         light.flash(led.BLUE)
-
-
-    client = avs.connect_to_avs()
-    dialog_req_id = [helpers.generate_unique_id()]
-    audio_process = Processing(input_file, output_file, speed, 15)
-    os.system("mpg321 audio_instrs/startup.mp3")
     
     # check if should play tutorial, requires holding for 2 sec
     time.sleep(5)
