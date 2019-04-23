@@ -15,6 +15,8 @@ from functools import partial
 IN_TUTORIAL = False
 IN_MENU = False
 
+menu_filenames = ["audio_instrs/1x.mp3", "audio_instrs/2x.mp3", "audio_instrs/3x.mp3"]
+
 def launch_menu(button, light, processor):
     global IN_MENU
     IN_MENU = True
@@ -33,7 +35,6 @@ def launch_menu(button, light, processor):
 
     # iterate through options until user makes a choice
     cont = True
-    menu_filenames = ["audio_instrs/1x.mp3", "audio_instrs/2x.mp3", "audio_instrs/3x.mp3"]
     while cont:
         for i in range(3):
             color = led.ALL[i]
@@ -88,10 +89,13 @@ def main(input_file, output_file, speed, debug=False):
 
     if speed == 1:
         light.flash(led.RED)
+        os.system("mpg321 " + menu_filenames[speed - 1])
     elif speed == 2:
         light.flash(led.GRN)
+        os.system("mpg321 " + menu_filenames[speed - 1])
     else:
         light.flash(led.BLUE)
+        os.system("mpg321 " + menu_filenames[speed - 1])
 
 
     client = avs.connect_to_avs()
