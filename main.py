@@ -116,7 +116,7 @@ def main(input_file, output_file, speed, debug=False):
     try:
         while True:
             print("ready for input")
-            light.change_color(led.GRN)
+            light.change_color(light.GRN)
 
             # record from mic
             if input_file == "in.wav":
