@@ -66,7 +66,7 @@ def launch_menu(button, light, processor):
 def play_tutorial():
     global IN_TUTORIAL
     IN_TUTORIAL = True
-    os.system("omxplayer audio_instrs/tutorial.mp3")
+    os.system("mpg321 audio_instrs/tutorial.mp3")
     IN_TUTORIAL = False
 
 def main(input_file, output_file, speed, debug=False):
@@ -94,7 +94,7 @@ def main(input_file, output_file, speed, debug=False):
     client = avs.connect_to_avs()
     dialog_req_id = [helpers.generate_unique_id()]
     audio_process = Processing(input_file, output_file, speed, 15)
-    os.system("omxplayer audio_instrs/startup.mp3")
+    os.system("mpg321 audio_instrs/startup.mp3")
     
     # check if should play tutorial, requires holding for 2 sec
     # button.wait_for_press()
@@ -102,7 +102,7 @@ def main(input_file, output_file, speed, debug=False):
 
     # at this point know they've held for 2 sec
     # if button.is_pressed:
-    #     os.system("omxplayer audio_instrs/tutorial.mp3")
+    #     os.system("mpg321 audio_instrs/tutorial.mp3")
     #     button.wait_for_release()
 
     if IN_TUTORIAL:
@@ -161,13 +161,13 @@ def main(input_file, output_file, speed, debug=False):
             light.change_color(led.PUR)
             if not outfiles:
                 light.change_color(led.RED)
-                os.system("omxplayer audio_instrs/alexa-noresponse.mp3")
+                os.system("mpg321 audio_instrs/alexa-noresponse.mp3")
                 print("Error, no outfiles")
                 time.sleep(1)
 
             for of in outfiles:
                 print("playing: " + of)
-                os.system("omxplayer " + of)
+                os.system("mpg321 " + of)
 
             if input_file == 'in.wav':
                 print("Command completed! Waiting for new input!")

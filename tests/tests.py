@@ -22,7 +22,7 @@ def test_avs:
 
     for of in outfiles:
         print("playing:" + of)
-        os.system('omxplayer '+ of)
+        os.system('mpg321 '+ of)
     
 
 def test_brad:
@@ -41,7 +41,7 @@ def test_brad:
 
     for of in outfiles:
         print("playing:" + of)
-        os.system('omxplayer '+ of)
+        os.system('mpg321 '+ of)
 
 
 def test_incorrect:
@@ -56,7 +56,7 @@ def test_incorrect:
 
     for of in outfiles:
         print("playing:" + of)
-        os.system('omxplayer '+ of)
+        os.system('mpg321 '+ of)
 
 
 def main():
